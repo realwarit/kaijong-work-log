@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ไก่จอง.com | Work Log</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&family=Mitr:wght@500;600;700;800&display=swap');
+
+  :root{
+    --ink:#1B2430;
+    --ink-2:#232E3D;
+    --ink-3:#2B3848;
+    --paper:#F7F4EC;
+    --amber:#E8A33D;
+    --teal:#3E8E7E;
+    --coral:#F06D4F;
+    --text-light:#F1EDE0;
+    --muted:#8891A0;
+  }
+  html{scroll-behavior:smooth;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at top left, rgba(232,163,61,0.18), transparent 28%),
+      radial-gradient(circle at 80% 10%, rgba(62,142,126,0.18), transparent 24%),
+      linear-gradient(180deg, #18202B 0%, #111822 100%);
+    font-family:'Literata',serif;
+    color:var(--text-light);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .feather-layer{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+  }
+  .feather{
+    position:absolute;
+    top:-18vh;
+    left:var(--x);
+    width:var(--size);
+    height:calc(var(--size) * 2.9);
+    opacity:var(--opacity);
+    transform:translate3d(0, -20vh, 0) rotate(var(--rot));
+    animation:feather-fall var(--duration) linear infinite;
+    animation-delay:var(--delay);
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.16));
+  }
+  .feather::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:60% 40% 65% 35% / 55% 45% 55% 45%;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,223,183,0.82) 55%, rgba(232,163,61,0.18));
+    box-shadow:inset -4px -10px 14px rgba(240,109,79,0.08);
+    clip-path:polygon(50% 0%, 62% 4%, 72% 14%, 79% 28%, 82% 44%, 79% 60%, 70% 76%, 60% 88%, 48% 96%, 36% 100%, 26% 98%, 18% 92%, 12% 82%, 8% 68%, 6% 54%, 7% 40%, 12% 26%, 20% 14%, 32% 5%);
+  }
+  .feather::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:6%;
+    width:2px;
+    height:88%;
+    background:linear-gradient(180deg, rgba(163,105,24,0.35), rgba(163,105,24,0.08));
+    border-radius:999px;
+    transform:translateX(-50%);
+  }
+  body::before,
+  body::after{
+    content:'';
+    position:fixed;
+    inset:auto;
+    pointer-events:none;
+    z-index:0;
+  }
+  body::before{
+    top:12px;
+    right:12px;
+    width:180px;
+    height:180px;
+    background:radial-gradient(circle, rgba(240,109,79,0.16), transparent 70%);
+    filter:blur(2px);
+  }
+  body::after{
+    left:-60px;
+    bottom:20px;
+    width:260px;
+    height:260px;
+    background:radial-gradient(circle, rgba(232,163,61,0.12), transparent 72%);
+    filter:blur(4px);
+  }
+  .wrap{
+    position:relative;
+    z-index:1;
+    width:min(1180px, calc(100vw - 32px));
+    margin:0 auto;
+    padding:24px 0 90px;
+  }
+
+  header{
+    position:relative;
+    padding:30px 0 34px;
+    margin-bottom:28px;
+  }
+  .hero{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:28px;
+    background:
+      linear-gradient(135deg, rgba(35,46,61,0.92), rgba(17,24,34,0.92)),
+      linear-gradient(90deg, rgba(232,163,61,0.08), rgba(62,142,126,0.08));
+    box-shadow:0 28px 80px rgba(0,0,0,0.34);
+    padding:30px;
+  }
+  .hero::before,
+  .hero::after{
+    content:'';
+    position:absolute;
+    border-radius:999px;
+    pointer-events:none;
+    animation:float 8s ease-in-out infinite;
+  }
+  .hero::before{
+    width:220px;
+    height:220px;
+    top:-90px;
+    right:-70px;
+    background:radial-gradient(circle, rgba(232,163,61,0.25), transparent 68%);
+  }
+  .hero::after{
+    width:160px;
+    height:160px;
+    left:-40px;
+    bottom:-50px;
+    background:radial-gradient(circle, rgba(62,142,126,0.22), transparent 68%);
+    animation-duration:10s;
+  }
+  .hero-grid{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:minmax(0,1.5fr) minmax(280px,0.9fr);
+    gap:22px;
+    align-items:end;
+  }
+  .wordmark{
+    font-family:'Mitr','FC Farmyard',sans-serif;
+    font-weight:800;
+    font-size:clamp(48px, 8vw, 96px);
+    letter-spacing:0.8px;
+    color:#FFF3D2;
+    -webkit-text-stroke:0.6px rgba(122,68,0,0.22);
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.14),
+      0 6px 16px rgba(120,61,0,0.18),
+      0 0 18px rgba(232,163,61,0.16);
+    margin:0;
+    line-height:0.92;
+    display:block;
+    max-width:100%;
+  }
+  .wordmark span{
+    color:transparent;
+    background:linear-gradient(180deg, #FFF9E7 0%, #FFD56A 38%, #E8A33D 70%, #C97719 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+  }
+  .brand-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px;}
+  .brand-pill,
+  .brand-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(255,255,255,0.05);
+    padding:8px 12px;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
+    color:var(--text-light);
+  }
+  .brand-pill{
+    font-size:16px;
+    letter-spacing:1.4px;
+    padding:10px 16px;
+  }
+  .kaijong-font{
+    font-family:'Mitr','FC Farmyard',sans-serif;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#FFF3D2;
+    -webkit-text-stroke:0.6px rgba(122,68,0,0.32);
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.18),
+      0 4px 10px rgba(120,61,0,0.22),
+      0 0 16px rgba(232,163,61,0.24);
+  }
+  .brand-pill .kaijong-font,
+  .signal-value .kaijong-font,
+  .badge-link .kaijong-font,
+  .footer-brand .kaijong-font{
+    display:inline-block;
+    background:linear-gradient(180deg, #FFF9E7 0%, #FFD56A 36%, #E8A33D 66%, #C97719 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .entry-chip .kaijong-font{
+    font-family:'Mitr','FC Farmyard',sans-serif;
+    letter-spacing:0.6px;
+    color:#F0B44D;
+  }
+  .brand-pill strong{color:var(--amber);}
+  .brand-tag{color:var(--muted);}
+  .subtitle{
+    max-width:52ch;
+    margin:14px 0 0;
+    color:#C7CFDA;
+    font-size:16px;
+    line-height:1.75;
+  }
+  .hero-aside{
+    display:grid;
+    gap:12px;
+  }
+  .signal,
+  .count-box,
+  .brand-wall{
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.04);
+    backdrop-filter:blur(6px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .signal{
+    padding:18px 18px 16px;
+  }
+  .signal-label{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 10px;
+  }
+  .signal-value{
+    margin:0;
+    font-size:28px;
+    line-height:1.1;
+    letter-spacing:0.8px;
+    color:var(--text-light);
+  }
+  .count-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    padding:14px;
+  }
+  .count-item{
+    padding:10px 12px;
+    border-radius:14px;
+    background:rgba(27,36,48,0.7);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .count-num{
+    display:block;
+    font-family:'Space Mono',monospace;
+    font-size:20px;
+    color:var(--amber);
+    margin-bottom:4px;
+  }
+  .count-num.latest-date{
+    font-size:14px;
+    line-height:1.2;
+    white-space:pre-line;
+  }
+  .count-label{
+    font-size:12px;
+    color:var(--muted);
+  }
+  .brand-wall{
+    padding:14px 16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .brand-chip{
+    border-radius:999px;
+    padding:7px 10px;
+    background:linear-gradient(135deg, rgba(232,163,61,0.18), rgba(62,142,126,0.14));
+    color:var(--text-light);
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.8px;
+  }
+  .brand-chip.highlight{background:linear-gradient(135deg, rgba(240,109,79,0.25), rgba(232,163,61,0.2));}
+
+  .top-strip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:18px 0 22px;
+    padding:0 4px;
+    flex-wrap:wrap;
+  }
+  .section-note{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .badge-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    color:var(--text-light);
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .members-section{
+    margin:18px 0 20px;
+    padding:18px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:linear-gradient(180deg, rgba(35,46,61,0.94), rgba(21,28,39,0.94));
+    box-shadow:0 18px 44px rgba(0,0,0,0.24);
+  }
+  .members-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .members-title{
+    margin:0;
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .members-subtitle{
+    margin:6px 0 0;
+    font-size:18px;
+    line-height:1.2;
+    color:var(--text-light);
+  }
+  .members-note{
+    margin:0;
+    color:var(--muted);
+    font-size:12px;
+  }
+  .members-grid{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:10px;
+  }
+  .member-card{
+    position:relative;
+    overflow:hidden;
+    padding:14px;
+    border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border:1px solid rgba(255,255,255,0.08);
+    min-height:190px;
+  }
+  .member-card::before{
+    content:'';
+    position:absolute;
+    inset:auto -28px -28px auto;
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--accent), transparent 72%);
+    opacity:0.18;
+  }
+  .member-avatar{
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    font-family:'Space Mono',monospace;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(135deg, var(--accent), rgba(255,255,255,0.2));
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+  }
+  .member-name{
+    margin:10px 0 3px;
+    font-size:16px;
+    line-height:1.2;
+    color:var(--text-light);
+  }
+  .member-role{
+    margin:0 0 8px;
+    color:var(--amber);
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
+  }
+  .member-desc{
+    margin:0;
+    color:#C7CFDA;
+    font-size:12px;
+    line-height:1.6;
+  }
+  .member-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:10px;
+  }
+  .member-tag{
+    padding:5px 8px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    color:var(--muted);
+    font-family:'Space Mono',monospace;
+    font-size:9px;
+    letter-spacing:0.8px;
+    text-transform:uppercase;
+  }
+  .entries-heading{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 18px;
+  }
+  .empty{
+    color:var(--muted);
+    font-style:italic;
+    font-size:15px;
+    padding:20px 0 40px;
+  }
+
+  .entry{
+    position:relative;
+    background:linear-gradient(180deg, rgba(35,46,61,0.95), rgba(23,31,43,0.95));
+    border-radius:22px;
+    padding:24px;
+    margin-bottom:22px;
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 18px 40px rgba(0,0,0,0.22);
+    overflow:hidden;
+    animation:fadeUp 0.7s ease both;
+  }
+  .entry::before{
+    content:'';
+    position:absolute;
+    inset:0 0 auto auto;
+    width:140px;
+    height:140px;
+    background:radial-gradient(circle, rgba(232,163,61,0.08), transparent 70%);
+    pointer-events:none;
+  }
+  .entry-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .stamp{
+    display:inline-block;
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.5px;
+    color:var(--amber);
+    border:1.5px solid var(--amber);
+    border-radius:3px;
+    padding:4px 10px;
+    transform:rotate(-2deg);
+    white-space:nowrap;
+  }
+  .entry-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:2px;
+  }
+  .entry-chip{
+    display:inline-flex;
+    align-items:center;
+    border-radius:999px;
+    padding:6px 10px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    color:var(--muted);
+    font-family:'Space Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.9px;
+    text-transform:uppercase;
+  }
+  .entry-text{
+    margin:16px 0 0;
+    font-size:16px;
+    line-height:1.8;
+    color:var(--text-light);
+    white-space:pre-wrap;
+  }
+  .entry-photos{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:14px;
+    margin-top:18px;
+  }
+  .photo-open{
+    all:unset;
+    display:block;
+    cursor:zoom-in;
+    border-radius:4px;
+  }
+  .polaroid{
+    position:relative;
+    background:#fff;
+    padding:8px 8px 22px;
+    border-radius:4px;
+    width:100%;
+    max-width:230px;
+    justify-self:start;
+    box-shadow:0 12px 24px rgba(0,0,0,0.24);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .polaroid img{width:100%;height:200px;object-fit:cover;display:block;background:#ddd;border-radius:2px;pointer-events:none;}
+  .polaroid:nth-child(odd){transform:rotate(-2.5deg);}
+  .polaroid:nth-child(even){transform:rotate(2deg);}
+  .polaroid:hover{transform:translateY(-6px) rotate(0deg) scale(1.02);box-shadow:0 16px 30px rgba(0,0,0,0.3);}
+  .image-modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(8,12,18,0.86);
+    backdrop-filter:blur(10px);
+    z-index:50;
+  }
+  .image-modal.is-open{display:flex;}
+  .image-modal__panel{
+    position:relative;
+    width:min(1100px, 100%);
+    max-height:calc(100vh - 40px);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .image-modal__close{
+    align-self:flex-end;
+    appearance:none;
+    border:none;
+    border-radius:999px;
+    padding:10px 14px;
+    background:rgba(255,255,255,0.1);
+    color:var(--text-light);
+    font-family:'Space Mono',monospace;
+    letter-spacing:1px;
+    cursor:pointer;
+  }
+  .image-modal__frame{
+    overflow:hidden;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,0.12);
+    background:rgba(20,26,36,0.96);
+    box-shadow:0 24px 80px rgba(0,0,0,0.5);
+  }
+  .image-modal__img{
+    display:block;
+    width:100%;
+    max-height:calc(100vh - 140px);
+    object-fit:contain;
+    background:#0f141d;
+  }
+  .image-modal__caption{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    text-align:center;
+  }
+  .footer-brand{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-top:28px;
+    padding:18px 20px;
+    border-radius:18px;
+    background:linear-gradient(135deg, rgba(232,163,61,0.12), rgba(62,142,126,0.1));
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .footer-brand strong{font-family:'Space Mono',monospace;letter-spacing:1px;}
+  .footer-brand strong{font-size:22px;color:var(--amber);}
+  .footer-brand span{color:var(--muted);}
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(14px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+  }
+  @keyframes feather-fall{
+    0%{
+      transform:translate3d(0, -20vh, 0) rotate(calc(var(--rot) - 10deg));
+    }
+    25%{
+      transform:translate3d(12px, 25vh, 0) rotate(calc(var(--rot) + 8deg));
+    }
+    50%{
+      transform:translate3d(-10px, 55vh, 0) rotate(calc(var(--rot) - 6deg));
+    }
+    75%{
+      transform:translate3d(14px, 85vh, 0) rotate(calc(var(--rot) + 12deg));
+    }
+    100%{
+      transform:translate3d(-8px, 120vh, 0) rotate(calc(var(--rot) - 14deg));
+    }
+  }
+
+  @media (max-width:600px){
+    .wrap{width:min(100vw - 18px, 100vw);padding-top:14px;}
+    .hero{padding:18px;border-radius:22px;}
+    .hero-grid{grid-template-columns:1fr;}
+    .count-box{grid-template-columns:1fr 1fr 1fr;}
+    .members-section{padding:12px;}
+    .members-grid{grid-template-columns:1fr;}
+    .members-subtitle{font-size:14px;}
+    .entry{padding:18px 16px;}
+    .entry-photos{grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));}
+    .polaroid{max-width:none;}
+    .polaroid img{height:170px;}
+    .image-modal{padding:12px;}
+    .image-modal__img{max-height:calc(100vh - 130px);}
+    .wordmark{font-size:clamp(40px, 13vw, 72px);letter-spacing:0.4px;line-height:0.94;}
+    .brand-pill{font-size:14px;}
+    .signal-value{font-size:22px;}
+    .footer-brand strong{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+<div class="feather-layer" id="featherLayer" aria-hidden="true"></div>
+<div class="image-modal" id="imageModal" aria-hidden="true">
+  <div class="image-modal__panel" role="dialog" aria-modal="true" aria-label="ดูภาพเต็ม">
+    <button class="image-modal__close" type="button" id="imageModalClose">ปิด</button>
+    <div class="image-modal__frame">
+      <img class="image-modal__img" id="imageModalImg" alt="">
+    </div>
+    <p class="image-modal__caption" id="imageModalCaption"></p>
+  </div>
+</div>
+<div class="wrap">
+  <header>
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="brand-row">
+            <span class="brand-pill"><span class="kaijong-font">KAIJONG.com</span><strong></strong></span>
+            <span class="brand-tag">Work log / photo story</span>
+          </div>
+          <p class="wordmark">WORK<span>_LOG</span></p>
+          <p class="subtitle">บันทึกกระบวนการทำงานแบบเต็มหน้า พร้อมบรรยากาศที่ดูเป็นแบรนด์มากขึ้น มีภาพประกอบและจังหวะการเลื่อนที่ชัดเจน</p>
+        </div>
+        <div class="hero-aside">
+          <div class="signal">
+            <p class="signal-label">brand signal</p>
+            <p class="signal-value"><span class="kaijong-font">KAIJONG.com</span></p>
+          </div>
+          <div class="count-box" id="countBox">
+            <div class="count-item">
+              <span class="count-num" id="entryCount">0</span>
+              <span class="count-label">entries</span>
+            </div>
+            <div class="count-item">
+              <span class="count-num" id="photoCount">0</span>
+              <span class="count-label">photos</span>
+            </div>
+            <div class="count-item">
+              <span class="count-num latest-date" id="latestDate">—</span>
+              <span class="count-label">latest</span>
+            </div>
+          </div>
+          <div class="brand-wall">
+            <span class="brand-chip">editable</span>
+            <span class="brand-chip">animated</span>
+            <span class="brand-chip highlight">thai brand</span>
+            <span class="brand-chip">photo log</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="members-section" aria-labelledby="membersTitle">
+    <div class="members-head">
+      <div>
+        <p class="members-title" id="membersTitle">สมาชิกในกลุ่ม</p>
+        <p class="members-subtitle">สมาชิกในกลุ่มของไก่จอง.com</p>
+      </div>
+    </div>
+    <div class="members-grid" id="membersGrid"></div>
+  </section>
+
+  <div class="top-strip">
+    <div>
+      <p class="entries-heading">ประวัติการบันทึก</p>
+      <p class="section-note">หน้าจอนี้ออกแบบให้ดูกว้างขึ้นและมีจังหวะภาพมากขึ้น</p>
+    </div>
+    <div class="badge-link"><span class="kaijong-font">KAIJONG</span>.com / work log</div>
+  </div>
+  <div id="entriesList"></div>
+  <div class="footer-brand">
+    <strong><span class="kaijong-font">KAIJONG</span>.com</strong>
+    <span>โหมดพอร์ตก์โฟลิโอของบันทึกงาน พร้อมภาพและความเคลื่อนไหวเบา ๆ</span>
+  </div>
+</div>
+
+<script>
+/*
+  แก้ไขบันทึกของคุณได้ตรงนี้ เพิ่ม/ลบ/แก้รายการในอาเรย์ ENTRIES ด้านล่าง
+
+  แต่ละรายการมีโครงสร้าง:
+  {
+    date: "YYYY-MM-DD",       วันที่ทำงาน
+    text: "รายละเอียดงาน",     คำอธิบายสิ่งที่ทำ
+    images: [ "path/to/รูป1.jpg", "https://example.com/รูป2.jpg" ]
+                                ใส่ path ไฟล์รูปในเครื่อง หรือ URL รูปจากอินเทอร์เน็ต
+                                ถ้าไม่มีรูป ใส่ [] (อาเรย์ว่าง)
+  }
+
+  รายการจะถูกจัดเรียงจากวันที่ล่าสุดไปเก่าสุดให้อัตโนมัติ
+*/
+
+const ENTRIES = [
+  {
+    date: "2026-07-21",
+    text: "รับมอบหมายงาน และเริ่มวางแผนการทำงาน",
+    images: [
+
+    ]
+  },
+  {
+    date: "2026-07-24",
+    text: "เริ่มทำงานตามแผนที่วางไว้ และมีการสัมภาษณ์แม่ค้าเพื่อเก็บข้อมูลเพิ่มเติม",
+    images: [
+      "1.jpg",
+      "2.jpg",
+      "3.jpg"
+    ]
+  },
+    {
+      date: "2026-07-25",
+      text: "เริ่มทำงานและศึกษาข้อมูลเพิ่มเติมเกี่ยวกับงานที่ได้รับมอบหมาย",
+      images: [
+        "6.jpg",
+
+      ]
+    },
+    {
+      date: "2026-07-29",
+      text: "ทำงานต่อเนื่อง",
+      images: [
+        "4.jpg",
+
+      ]
+    },  
+     {
+      date: "2026-08-17",
+      text: "ทำงานต่อเนื่องและปรับปรุงแผนการทำงาน",
+      images: [
+        "7.jpg",
+      ]
+    }, 
+     {
+      date: "2026-08-09",
+      text: "ทำงานต่อเนื่องและปรับปรุงเวบไซต์ให้เหมาะสมกับผู้ใช้งาน",
+      images: [
+        "8.jpg",
+      ]
+    },   
+         {
+      date: "2026-08-07",
+      text: "ทำงานต่อเนื่อง",
+      images: [
+        "9.jpg",
+        "10.jpg"
+      ]
+    },   
+  {
+    date: "2026-08-11",
+    text: "นำเสนอความคืบหน้าของงานต่ออาจารย์ที่ปรึกษา และรับคำแนะนำเพิ่มเติม",
+    images: [
+    ]
+  },
+    {
+    date: "2026-08-17",
+    text: "ทดสอบระบบจริงและหน้าจอการใช้งานของผู้ใช้",
+    images: [
+      "11.jpg",
+      "12.png",
+      "13.png"
+    ]
+  }
+];
+
+const MEMBERS = [
+  {
+    name: 'นายพลกฤต สีกลาง',
+    role: '16740491015',
+    initials: '015',
+    accent: '#F0B44D',
+    desc: ' วป. 015',
+    tags: ['member', 'team']
+  },
+  {
+    name: 'นางสาววริศรา แซ่ลิ้ม',
+    role: '167405100020',
+    initials: '020',
+    accent: '#63C7B2',
+    desc: ' วป. 020',
+    tags: ['member', 'team']
+  },
+  {
+    name: 'นายรัชพล ยกเชื้อ',
+    role: '167405100027',
+    initials: '027',
+    accent: '#F06D4F',
+    desc: ' วป. 027',
+    tags: ['member', 'team']
+  },
+  {
+    name: 'นางสาวนัสรีน บุญเลี่ยง',
+    role: '167405100031',
+    initials: '031',
+    accent: '#FFF3D2',
+    desc: ' วป. 031',
+    tags: ['member', 'team']
+  },
+  {
+    name: 'นางสาวจารุวรรณ พรหมรักษ์',
+    role: '167405100042',
+    initials: '042',
+    accent: '#C97719',
+    desc: 'บช 042',
+    tags: ['member', 'team']
+  },
+  {
+    name: 'นางสาวอนันญา รัชตะวรรณ',
+    role: '167405100055',
+    initials: '055',
+    accent: '#8A6BFF',
+    desc: 'บช 055',
+    tags: ['member', 'team']
+  }
+];
+
+function formatDateDisplay(iso){
+  const [y,m,d] = iso.split('-');
+  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const buddhistYear = parseInt(y,10) + 543;
+  return d + ' ' + months[parseInt(m,10)-1] + ' ' + buddhistYear;
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function renderMembers(){
+  const container = document.getElementById('membersGrid');
+  if(!container) return;
+  container.innerHTML = MEMBERS.map(member=>
+    '<article class="member-card" style="--accent:' + member.accent + ';">' +
+      '<div class="member-avatar">' + escapeHtml(member.initials) + '</div>' +
+      '<h3 class="member-name">' + escapeHtml(member.name) + '</h3>' +
+      '<p class="member-role">' + escapeHtml(member.role) + '</p>' +
+      '<p class="member-desc">' + escapeHtml(member.desc) + '</p>' +
+      '<div class="member-tags">' + member.tags.map(tag=> '<span class="member-tag">' + escapeHtml(tag) + '</span>').join('') + '</div>' +
+    '</article>'
+  ).join('');
+}
+
+function openImageModal(src, caption){
+  const modal = document.getElementById('imageModal');
+  const image = document.getElementById('imageModalImg');
+  const label = document.getElementById('imageModalCaption');
+  if(!modal || !image || !label) return;
+  image.src = src;
+  image.alt = caption || 'ภาพเต็ม';
+  label.textContent = caption || '';
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closeImageModal(){
+  const modal = document.getElementById('imageModal');
+  const image = document.getElementById('imageModalImg');
+  if(!modal || !image) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  image.src = '';
+}
+
+function createFeathers(){
+  const layer = document.getElementById('featherLayer');
+  if(!layer) return;
+  const featherCount = window.matchMedia('(max-width: 600px)').matches ? 9 : 16;
+  const fragments = [];
+  for(let index = 0; index < featherCount; index += 1){
+    const size = (Math.random() * 18 + 18).toFixed(1) + 'px';
+    const left = (Math.random() * 100).toFixed(2) + 'vw';
+    const duration = (Math.random() * 8 + 8).toFixed(2) + 's';
+    const delay = (-Math.random() * 12).toFixed(2) + 's';
+    const rot = (Math.random() * 80 - 40).toFixed(2) + 'deg';
+    const opacity = (Math.random() * 0.35 + 0.25).toFixed(2);
+    fragments.push(
+      '<span class="feather" style="--size:' + size + ';--x:' + left + ';--duration:' + duration + ';--delay:' + delay + ';--rot:' + rot + ';--opacity:' + opacity + ';"></span>'
+    );
+  }
+  layer.innerHTML = fragments.join('');
+}
+
+function render(){
+  const list = document.getElementById('entriesList');
+  list.innerHTML = '';
+  if(ENTRIES.length === 0){
+    list.innerHTML = '<p class="empty">ยังไม่มีบันทึก — เพิ่มรายการในอาเรย์ ENTRIES ในโค้ด</p>';
+    return;
+  }
+  const sorted = [...ENTRIES].sort((a,b)=> a.date < b.date ? 1 : -1);
+  const photoCount = sorted.reduce((total, entry)=> total + (entry.images ? entry.images.length : 0), 0);
+  document.getElementById('entryCount').textContent = sorted.length;
+  document.getElementById('photoCount').textContent = photoCount;
+  document.getElementById('latestDate').textContent = formatDateDisplay(sorted[0].date).replace(/\s+/g, '\n');
+  sorted.forEach(entry=>{
+    const div = document.createElement('div');
+    div.className = 'entry';
+    let photosHtml = '';
+    if(entry.images && entry.images.length){
+      photosHtml = '<div class="entry-photos">' + entry.images.map(src=>
+        '<button class="photo-open" type="button" data-src="'+escapeHtml(src)+'" data-caption="'+escapeHtml(entry.date)+'">' +
+          '<div class="polaroid"><img src="'+escapeHtml(src)+'" alt="ภาพประกอบวันที่ '+escapeHtml(entry.date)+'"></div>' +
+        '</button>'
+      ).join('') + '</div>';
+    }
+    div.innerHTML =
+      '<div class="entry-top">' +
+        '<span class="stamp">' + formatDateDisplay(entry.date) + '</span>' +
+        '<div class="entry-meta">' +
+          '<span class="entry-chip"><span class="kaijong-font">KAIJONG</span>.com</span>' +
+          '<span class="entry-chip">log entry</span>' +
+        '</div>' +
+      '</div>' +
+      '<p class="entry-text">' + escapeHtml(entry.text) + '</p>' +
+      photosHtml;
+    list.appendChild(div);
+  });
+}
+document.addEventListener('click', (event)=>{
+  const photoButton = event.target.closest('.photo-open');
+  if(photoButton){
+    openImageModal(photoButton.dataset.src || '', photoButton.dataset.caption || '');
+    return;
+  }
+  if(event.target.closest('#imageModalClose') || event.target.id === 'imageModal'){
+    closeImageModal();
+  }
+});
+document.addEventListener('keydown', (event)=>{
+  if(event.key === 'Escape'){
+    closeImageModal();
+  }
+});
+render();
+renderMembers();
+createFeathers();
+</script>
+</body>
+</html>
